@@ -1,26 +1,19 @@
 package main
 
 import (
-	"convert/epub"
 	"convert/rule"
+	"convert/txt"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("请输入更多参数")
-		return
+	if len(os.Args) < 2 || len(os.Args) > 3 {
+		fmt.Println("输入格式错误, 请参考标准输入:")
+		fmt.Println("\t./convert a.txt或")
+		fmt.Println("\t./convert a.txt b.png")
 	}
-	for i := 1; i < len(os.Args); i++ {
-		if rule.IsTxt(os.Args[i]) {
-			file, err := os.Open(os.Args[i])
-			if err != nil {
-				fmt.Println(err)
-			}
-			titleRule := rule.TxtTitleRegexp()
-			epub.ConvertEpub(file, strings.Split(os.Args[i], ".")[0], titleRule, nil)
-		}
-	}
+
+	file := txt.NewTxt(os.Args[1])
+	rule.ConvertTxtToEpub(file, nil)
 }

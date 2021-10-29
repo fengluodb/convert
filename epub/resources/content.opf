@@ -1,0 +1,22 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:title>{{.BookTitle}}</dc:title>
+    <dc:description>Convert自动生成</dc:description>
+    <dc:date>{{.Date}}</dc:date>
+    <dc:language>zh</dc:language>
+    <meta name="cover" content="cover"/>
+  </metadata>
+  <manifest>
+    {{.Items}}
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+    <item href="Styles/stylesheet.css" id="styleshee" media-type="text/css"/>
+    <item href="Images/cover.jpg" id="cover" media-type="image/jpeg"/>
+  </manifest>
+  <spine toc="ncx">
+    {{.Itemrefs}}
+  </spine>
+  <guide>
+    <reference href="text/titlepage.xhtml" title="Cover" type="cover"/>
+  </guide>
+</package>
