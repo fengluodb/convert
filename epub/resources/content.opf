@@ -11,7 +11,7 @@
     {{.Items}}
     <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
     <item href="Styles/stylesheet.css" id="styleshee" media-type="text/css"/>
-    <item href="Images/cover.jpg" id="cover" media-type="image/jpeg"/>
+    <item href="images/cover.jpg" id="cover" media-type="image/jpeg"/>
   </manifest>
   <spine toc="ncx">
     {{.Itemrefs}}

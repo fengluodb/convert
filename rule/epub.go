@@ -9,7 +9,9 @@ import (
 )
 
 // 将txt格式的网络小说转换为epub格式
-func ConvertTxtToEpub(src *txt.TxtReader, cover io.Reader) {
+func ConvertTxtToEpub(src *txt.TxtReader, cover io.ReadCloser) {
+	defer cover.Close()
+
 	src.ParseTxt()
 
 	dst := epub.NewEpub(src.BookTitle)
