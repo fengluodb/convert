@@ -5,15 +5,26 @@ import (
 	"convert/txt"
 	"fmt"
 	"os"
+	"regexp"
 )
 
-func main() {
-	if len(os.Args) < 2 || len(os.Args) > 3 {
-		fmt.Println("输入格式错误, 请参考标准输入:")
-		fmt.Println("\t./convert a.txt或")
-		fmt.Println("\t./convert a.txt b.png")
-	}
+var r1, _ = regexp.Compile("./convert (.*txt) into epub")
+var r2, _ = regexp.Compile("./convert (.*txt .*jpg) into epub")
 
-	file := txt.NewTxt(os.Args[1])
-	rule.ConvertTxtToEpub(file, nil)
+func main() {
+	command := ""
+	for _, v := range os.Args {
+		command += v + " "
+	}
+	fmt.Println(command)
+
+	if r1.Match([]byte(command)) {
+		file := txt.NewTxt(os.Args[1])
+		rule.ConvertTxtToEpub(file, nil)
+	}
+	if r2.Match([]byte(command)) {
+		file := txt.NewTxt(os.Args[1])
+		cover, _ := os.Open(os.Args[2])
+		rule.ConvertTxtToEpub(file, cover)
+	}
 }
