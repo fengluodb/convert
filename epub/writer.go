@@ -176,7 +176,7 @@ func (e *EpubWriter) Zip() {
 
 		// 获取：文件头信息
 		header, _ := zip.FileInfoHeader(info)
-		header.Name = strings.TrimPrefix(path, e.BookTitle+`\`)
+		header.Name = strings.TrimPrefix(path, e.BookTitle+`/`)
 
 		// 判断：文件是不是文件夹
 		if info.IsDir() {
