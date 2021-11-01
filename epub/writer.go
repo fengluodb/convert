@@ -74,7 +74,7 @@ func (e *EpubWriter) InitializeEpub() {
 	os.Mkdir(e.METADir, os.ModePerm)
 }
 
-// 向Text文件夹中添加文件
+// 向text文件夹中添加文件
 func (e *EpubWriter) AddTextHtml(fileName, title, content string) {
 	buf := bufio.NewReader(strings.NewReader(content))
 	paragraphs := ""
@@ -105,6 +105,7 @@ func (e *EpubWriter) AddTextHtml(fileName, title, content string) {
 	file.Close()
 }
 
+// 向根目录中添加mimetype文件
 func (e *EpubWriter) AddMimetype() {
 
 	file, _ := os.Create(path.Join(e.BookTitle, "mimetype"))
@@ -112,6 +113,7 @@ func (e *EpubWriter) AddMimetype() {
 	file.Close()
 }
 
+// 向META-INF目录中添加container.xml文件
 func (e *EpubWriter) AddContainerXml() {
 	data, _ := tmpl.ReadFile("resources/container.xml")
 
@@ -120,6 +122,7 @@ func (e *EpubWriter) AddContainerXml() {
 	file.Close()
 }
 
+// 向根目录中添加content.opf文件
 func (e *EpubWriter) AddContentOpf() {
 	data, _ := tmpl.ReadFile("resources/content.opf")
 	t, _ := template.New("opf").Parse(string(data))
@@ -129,6 +132,7 @@ func (e *EpubWriter) AddContentOpf() {
 	file.Close()
 }
 
+// 向根目录中添加toc.ncx文件
 func (e *EpubWriter) AddTocNcx() {
 	data, _ := tmpl.ReadFile("resources/toc.ncx")
 	t, _ := template.New("ncx").Parse(string(data))
@@ -138,6 +142,7 @@ func (e *EpubWriter) AddTocNcx() {
 	file.Close()
 }
 
+// 向styles中添加css文件（默认的格式）
 func (e *EpubWriter) AddStyle() {
 	data, _ := tmpl.ReadFile("resources/stylesheet.css")
 
@@ -146,6 +151,7 @@ func (e *EpubWriter) AddStyle() {
 	file.Close()
 }
 
+// 为epub添加缩略图
 func (e *EpubWriter) AddCover(src io.Reader) {
 	file, _ := os.Create(path.Join(e.ImagesDir, "cover.jpg"))
 	io.Copy(file, src)
