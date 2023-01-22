@@ -1,25 +1,22 @@
-// 该文件中包含将其他格式转换为epub格式的规则
-package rule
+package text
 
 import (
-	"convert/epub"
-	"convert/txt"
 	"fmt"
-	"io"
 )
 
-// 将txt格式的网络小说转换为epub格式
-func ConvertTxtToEpub(src *txt.TxtReader, cover io.ReadCloser) {
-	defer cover.Close()
+type MiddleText struct {
+	BookTitle              string
+	ChapterTitles          []string
+	ChapterTitleAndContent map[string]string
+}
 
-	src.ParseTxt()
-
-	dst := epub.NewEpub(src.BookTitle)
+func (m *MiddleText) ToEpub(output string) {
+	dst := NewEpub(output)
 	dst.InitializeEpub()
 
-	for i := 0; i < len(src.ChapterTitles); i++ {
+	for i := 0; i < len(m.ChapterTitles); i++ {
 		fileName := fmt.Sprintf("text%d.html", i)
-		dst.AddTextHtml(fileName, src.ChapterTitles[i], src.Chapter[src.ChapterTitles[i]])
+		dst.AddTextHtml(fileName, m.ChapterTitles[i], m.ChapterTitleAndContent[m.ChapterTitles[i]])
 		dst.Opf.Items += fmt.Sprintf(`<item href="text/text%d.html" id="id_%d" media-type="application/xhtml+xml"/>
 			`, i, i)
 		dst.Opf.Itemrefs += fmt.Sprintf(`<itemref idref="id_%d"/>
@@ -29,7 +26,7 @@ func ConvertTxtToEpub(src *txt.TxtReader, cover io.ReadCloser) {
 		     <text>%s</text>
 		   </navLabel>
 		   <content src="text/text%d.html"/>
-		</navPoint>`, i, i, src.ChapterTitles[i], i)
+		</navPoint>`, i, i, m.ChapterTitles[i], i)
 	}
 
 	dst.AddMimetype()
@@ -37,10 +34,6 @@ func ConvertTxtToEpub(src *txt.TxtReader, cover io.ReadCloser) {
 	dst.AddContentOpf()
 	dst.AddTocNcx()
 	dst.AddStyle()
-
-	if cover != nil {
-		dst.AddCover(cover)
-	}
 
 	dst.Zip()
 }
