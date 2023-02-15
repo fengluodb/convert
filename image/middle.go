@@ -57,35 +57,6 @@ func (m *MiddleImage) ToJPEG(outputDir string) error {
 }
 
 func (m *MiddleImage) ToGif(output string) error {
-	// var disposals []byte
-	// var images []*image.Paletted
-	// var delays []int
-	// for _, img := range m.ImageData {
-	// 	cp := getPalette(img)
-	// 	disposals = append(disposals, gif.DisposalBackground) //透明图片需要设置
-	// 	p := image.NewPaletted(image.Rect(0, 0, 640, 996), cp)
-	// 	draw.Draw(p, p.Bounds(), img, image.Point{}, draw.Src)
-	// 	images = append(images, p)
-	// 	delays = append(delays, 4)
-	// }
-
-	// g := &gif.GIF{
-	// 	Image:     images,
-	// 	Delay:     delays,
-	// 	LoopCount: -1,
-	// 	Disposal:  disposals,
-	// }
-
-	// path := path.Join(output, m.OriginalFilenames[0]+".gif")
-	// f, err := os.Create(path)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// defer f.Close()
-	// if err := gif.EncodeAll(f, g); err != nil {
-	// 	return errors.WithMessagef(err, "can't encode into %s", path)
-	// }
-	// return nil
 	return ToGif(output, m.OriginalFilenames[0], m.ImageData)
 }
 
@@ -161,10 +132,7 @@ func ToGif(outputDir string, filename string, imageData []image.Image) error {
 		LoopCount: len(imageData),
 	}
 
-	// palette := append(palette.WebSafe, color.Transparent)
 	for _, img := range imageData {
-		// palettedImg := image.NewPaletted(img.Bounds(), palette)
-		// draw.Draw(palettedImg, img.Bounds(), img, image.Point{}, draw.Src)
 		g.Image = append(g.Image, img.(*image.Paletted))
 		g.Delay = append(g.Delay, 0)
 	}
