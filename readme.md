@@ -5,6 +5,13 @@
 - [x] txt格式向Epub格式转换。
 - [x] png, jpg, gif格式相互转换
 
+## 下载与安装
+### 从源码编译
+```
+git clone https://github.com/fengluodb/convert.git
+sh build.sh
+```
+
 ## 使用方法
 
 ### 文本类转换
