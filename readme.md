@@ -8,11 +8,11 @@
 
 ### 文本类转换
 ```shell
-./convert text -t sourcefile -o outputfile
+./convert text -s sourcefile -o outputfile
 
 ```
 
 for example 
 ```shell
-./convert text -t assets/斗破苍穹.txt -o assets/斗破苍穹.epub
+./convert text -s assets/斗破苍穹.txt -o assets/斗破苍穹.epub
 ```

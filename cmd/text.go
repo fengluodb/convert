@@ -9,23 +9,21 @@ import (
 )
 
 var (
-	target string
-	output string
-
 	textCmd = &cobra.Command{
 		Use:   "text",
 		Short: "text subcommand converts text file into another format",
 		Long:  "text subcommand converts text file into another format",
 
+		// TODO: add support for current command style
 		Run: func(cmd *cobra.Command, args []string) {
-			originalFormat := strings.Split(target, ".")[1]
+			originalFormat := strings.Split(source[0], ".")[1]
 			outputFormat := strings.Split(output, ".")[1]
 
 			var middleText *text.MiddleText
 
 			switch originalFormat {
 			case "txt":
-				txtfile, err := text.NewTxt(target)
+				txtfile, err := text.NewTxt(source[0])
 				if err != nil {
 					panic(err)
 				}
@@ -45,10 +43,12 @@ var (
 )
 
 func init() {
-	textCmd.Flags().StringVarP(&target, "target", "t", "", "target file")
-	textCmd.Flags().StringVarP(&output, "output", "o", "", "output file")
+	textCmd.Flags().StringArrayVarP(&source, "source", "s", nil, "source files")
+	textCmd.Flags().StringVarP(&format, "format", "f", "", "the target format")
+	textCmd.Flags().StringVarP(&output, "output", "o", "", "the output dir")
 
-	textCmd.MarkFlagRequired("target")
+	textCmd.MarkFlagRequired("source")
+	textCmd.MarkFlagRequired("format")
 	textCmd.MarkFlagRequired("output")
 
 	rootCmd.AddCommand(textCmd)
