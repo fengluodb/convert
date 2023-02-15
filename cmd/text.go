@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"convert/text"
-	"convert/utils"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/fengluodb/convert/text"
+	"github.com/fengluodb/convert/utils"
 
 	"github.com/spf13/cobra"
 )

@@ -1,6 +1,6 @@
 package main
 
-import "convert/cmd"
+import "github.com/fengluodb/convert/cmd"
 
 func main() {
 	cmd.Execute()

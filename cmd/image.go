@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"convert/image"
-	"convert/utils"
 	"fmt"
 	"strings"
+
+	"github.com/fengluodb/convert/image"
+	"github.com/fengluodb/convert/utils"
 
 	"github.com/spf13/cobra"
 )

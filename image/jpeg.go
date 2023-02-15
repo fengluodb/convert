@@ -1,10 +1,11 @@
 package image
 
 import (
-	"convert/utils"
 	"image"
 	"image/jpeg"
 	"os"
+
+	"github.com/fengluodb/convert/utils"
 
 	"github.com/pkg/errors"
 )

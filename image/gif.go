@@ -1,9 +1,10 @@
 package image
 
 import (
-	"convert/utils"
 	"image/gif"
 	"os"
+
+	"github.com/fengluodb/convert/utils"
 )
 
 type Gif struct {

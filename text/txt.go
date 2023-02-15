@@ -2,11 +2,12 @@ package text
 
 import (
 	"bufio"
-	"convert/utils"
 	"io"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/fengluodb/convert/utils"
 
 	"github.com/pkg/errors"
 )
