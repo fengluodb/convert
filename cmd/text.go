@@ -4,6 +4,7 @@ import (
 	"convert/text"
 	"convert/utils"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -17,6 +18,10 @@ var (
 
 		// TODO: refine the code make it like image command
 		Run: func(cmd *cobra.Command, args []string) {
+			if output != "" {
+				os.MkdirAll(output, 0777)
+			}
+
 			for _, path := range source {
 				filename := utils.GetFileNameFromPath(path)
 				originalFormat := strings.Split(path, ".")[1]
