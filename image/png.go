@@ -2,6 +2,7 @@ package image
 
 import (
 	"image"
+	"image/png"
 	"os"
 
 	"github.com/fengluodb/convert/utils"
@@ -27,7 +28,7 @@ func NewPNGs(paths []string) (ImageInterface, error) {
 		}
 
 		defer file.Close()
-		img, _, err := image.Decode(file)
+		img, err := png.Decode(file)
 		if err != nil {
 			return nil, errors.WithMessagef(err, "can't decode %s", path)
 		}

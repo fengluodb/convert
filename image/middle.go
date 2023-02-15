@@ -16,9 +16,8 @@ type MiddleImage struct {
 	OriginalFormat    string
 	OriginalFilenames []string
 
-	ImageData      []image.Image
-	GifImageConfig []*image.Config
-	GifData        []*gif.GIF
+	ImageData []image.Image
+	GifData   []*gif.GIF
 }
 
 func (m *MiddleImage) To(format string, outputDir string) error {
