@@ -8,11 +8,6 @@ import (
 	"strings"
 )
 
-func GetBookTitleFromPath(path string) string {
-	_, filename := filepath.Split(path)
-	return strings.Split(filename, ".")[0]
-}
-
 func GetFileNameFromPath(path string) string {
 	_, filename := filepath.Split(path)
 	return strings.Split(filename, ".")[0]

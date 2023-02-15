@@ -10,8 +10,8 @@ type MiddleText struct {
 	ChapterTitleAndContent map[string]string
 }
 
-func (m *MiddleText) ToEpub(output string) {
-	dst := NewEpub(output)
+func (m *MiddleText) ToEpub(output string, filename string) {
+	dst := NewEpub(output, filename)
 	dst.InitializeEpub()
 
 	for i := 0; i < len(m.ChapterTitles); i++ {

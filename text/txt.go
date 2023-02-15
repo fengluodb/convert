@@ -27,8 +27,9 @@ func NewTxt(path string) (*Txt, error) {
 
 	defer file.Close()
 
+	filepath := utils.GetFileNameFromPath(path)
 	txt := &Txt{
-		BookTitle:              utils.GetBookTitleFromPath(path),
+		BookTitle:              strings.Split(filepath, ".")[0],
 		ChapterTitles:          []string{},
 		ChapterTitleAndContent: map[string]string{},
 	}

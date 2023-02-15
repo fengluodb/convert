@@ -3,7 +3,6 @@ package text
 import (
 	"archive/zip"
 	"bufio"
-	"convert/utils"
 	"embed"
 	"fmt"
 	"io"
@@ -48,23 +47,21 @@ type TEXT struct {
 //go:embed resources
 var tmpl embed.FS
 
-func NewEpub(output string) *Epub {
-	title := utils.GetBookTitleFromPath(output)
-	rootDir, _ := filepath.Split(output)
-	rootDir = filepath.Join(rootDir, title)
+func NewEpub(output string, filename string) *Epub {
+	rootDir := path.Join(output, filename)
 	return &Epub{
-		BookTitle: title,
+		BookTitle: filename,
 		RootDir:   rootDir,
 		TextDir:   path.Join(rootDir, "text"),
 		ImagesDir: path.Join(rootDir, "images"),
 		StylesDir: path.Join(rootDir, "styles"),
 		METADir:   path.Join(rootDir, "META-INF"),
 		Opf: &OPF{
-			BookTitle: title,
+			BookTitle: filename,
 			Date:      time.Now().Format("2006-01-02"),
 		},
 		Ncx: &NCX{
-			BookTitle: title,
+			BookTitle: filename,
 		},
 	}
 }
