@@ -3,7 +3,7 @@
 目前已实现的转换功能
 
 - [x] txt格式向Epub格式转换。
-- [x] png, jpg, gif格式相互转换
+- [x] png, jpg, bmp,gif格式相互转换
 - [x] resize 图片
 
 ## 下载与安装
