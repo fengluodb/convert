@@ -65,8 +65,28 @@ Flags:
 ./convert image --srcdir assets --srcformat png -f jpg -o test
 ```
 
+### 图片尺寸调节
+```shell
+image resize subcommand resize the image to the desired
+
+Usage:
+  convert image resize [flags]
+
+Flags:
+      --height int       the height of the image to resize
+  -h, --help             help for resize
+  -o, --output string    the output dir (default ".")
+  -s, --source strings   the list of source files
+      --width int        the width of the image to resize
+```
+
+示例
+```shell
+./convert image  resize -s assets/gopher-0.png --height 200 --width 150
+```
+
 ## TODO
 - [ ] 优化文本类相互转换的代码，增加对mobi，awz3格式的支持
-- [ ] 增加resize图片、压缩图片的功能
+- [x] 增加resize图片、压缩图片的功能
 - [ ] 增加与pdf相关的功能
 - [ ] 开发convert在线版
