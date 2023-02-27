@@ -11,14 +11,13 @@ import (
 
 	"github.com/disintegration/imaging"
 	"github.com/pkg/errors"
+	"golang.org/x/image/bmp"
 )
 
 type MiddleImage struct {
 	OriginalFormat    string
 	OriginalFilenames []string
-
-	ImageData []image.Image
-	GifData   []*gif.GIF
+	ImageData         []image.Image
 }
 
 func (m *MiddleImage) To(format string, outputDir string) error {
@@ -28,21 +27,12 @@ func (m *MiddleImage) To(format string, outputDir string) error {
 
 	switch {
 	case format == "png":
-		if m.OriginalFormat == "gif" {
-			return m.GifToImage(format, outputDir)
-		}
 		return m.ToPng(outputDir)
 	case format == "jpg" || format == "jpeg":
-		if m.OriginalFormat == "gif" {
-			return m.GifToImage(format, outputDir)
-		}
 		return m.ToJPEG(outputDir)
+	case format == "bmp":
+		return m.ToBMP(outputDir)
 	case format == "gif":
-		if m.OriginalFormat == "gif" {
-			for _, gif := range m.GifData {
-				m.ImageData = append(m.ImageData, GifToImage(gif)...)
-			}
-		}
 		return m.ToGif(outputDir)
 	}
 	return fmt.Errorf("can't convet %s into %s", m.OriginalFormat, format)
@@ -56,32 +46,12 @@ func (m *MiddleImage) ToJPEG(outputDir string) error {
 	return ToJPEG(outputDir, m.OriginalFilenames, m.ImageData)
 }
 
-func (m *MiddleImage) ToGif(output string) error {
-	return ToGif(output, m.OriginalFilenames[0], m.ImageData)
+func (m *MiddleImage) ToBMP(outputDir string) error {
+	return ToBMP(outputDir, m.OriginalFilenames, m.ImageData)
 }
 
-func (m *MiddleImage) GifToImage(format string, outputDir string) error {
-	var fn func(outputDir string, filenames []string, imageData []image.Image) error
-	if format == "png" {
-		fn = ToPng
-	} else if format == "jpg" || format == "jpeg" {
-		fn = ToJPEG
-	} else {
-		return fmt.Errorf("don't support convert git into %s", format)
-	}
-
-	for i, inGif := range m.GifData {
-		imageData := GifToImage(inGif)
-		filenames := []string{}
-		for j := 0; j < len(imageData); j++ {
-			filename := fmt.Sprintf("%s-%d", m.OriginalFilenames[i], j)
-			filenames = append(filenames, filename)
-		}
-		if err := fn(outputDir, filenames, imageData); err != nil {
-			return err
-		}
-	}
-	return nil
+func (m *MiddleImage) ToGif(output string) error {
+	return ToGif(output, m.ImageData)
 }
 
 func (m *MiddleImage) Resize(width, height int) {
@@ -136,16 +106,24 @@ func ToJPEG(outputDir string, filenames []string, imageData []image.Image) error
 	return nil
 }
 
-func GifToImage(inGif *gif.GIF) []image.Image {
-	data := []image.Image{}
-	for _, img := range inGif.Image {
-		data = append(data, img)
-	}
+func ToBMP(outputDir string, filenames []string, imageData []image.Image) error {
+	for i, img := range imageData {
+		filepath := path.Join(outputDir, filenames[i]+".bmp")
+		file, err := os.Create(filepath)
+		if err != nil {
+			return errors.WithMessagef(err, "can't create %s", filepath)
+		}
 
-	return data
+		defer file.Close()
+		err = bmp.Encode(file, img)
+		if err != nil {
+			return errors.WithMessagef(err, "failed to encode into %s", filepath)
+		}
+	}
+	return nil
 }
 
-func ToGif(outputDir string, filename string, imageData []image.Image) error {
+func ToGif(outputDir string, imageData []image.Image) error {
 	g := &gif.GIF{
 		LoopCount: len(imageData),
 	}
@@ -155,7 +133,7 @@ func ToGif(outputDir string, filename string, imageData []image.Image) error {
 		g.Delay = append(g.Delay, 0)
 	}
 
-	path := path.Join(outputDir, filename+".gif")
+	path := path.Join(outputDir, "output.gif")
 	f, err := os.Create(path)
 	if err != nil {
 		fmt.Println(err)

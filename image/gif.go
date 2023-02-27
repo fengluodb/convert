@@ -1,6 +1,8 @@
 package image
 
 import (
+	"fmt"
+	"image"
 	"image/gif"
 	"os"
 
@@ -9,16 +11,15 @@ import (
 
 type Gif struct {
 	filenames []string
-	data      []*gif.GIF
+	data      []image.Image
 }
 
 func NewGIFs(paths []string) (ImageInterface, error) {
 	filenames := []string{}
-	data := []*gif.GIF{}
+	data := []image.Image{}
 
 	for _, path := range paths {
-		filename := utils.GetFileNameFromPath(path)
-		filenames = append(filenames, filename)
+		gifName := utils.GetFileNameFromPath(path)
 
 		file, err := os.Open(path)
 		if err != nil {
@@ -30,7 +31,11 @@ func NewGIFs(paths []string) (ImageInterface, error) {
 		if err != nil {
 			return nil, err
 		}
-		data = append(data, inGif)
+		for i := 0; i < len(inGif.Image); i++ {
+			filename := fmt.Sprintf("%s-%d", gifName, i)
+			filenames = append(filenames, filename)
+			data = append(data, inGif.Image[i])
+		}
 	}
 
 	return &Gif{
@@ -43,6 +48,6 @@ func (g *Gif) ToMiddleImage() *MiddleImage {
 	return &MiddleImage{
 		OriginalFormat:    "gif",
 		OriginalFilenames: g.filenames,
-		GifData:           g.data,
+		ImageData:         g.data,
 	}
 }
