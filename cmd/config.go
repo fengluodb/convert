@@ -7,4 +7,7 @@ var (
 
 	srcFormat string // the format of the source files
 	srcDir    string // the directory of source files
+
+	imageHeight int // the height of the image
+	imageWidth  int // the width of the image
 )

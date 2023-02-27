@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/disintegration/imaging"
 	"github.com/pkg/errors"
 )
 
@@ -81,6 +82,24 @@ func (m *MiddleImage) GifToImage(format string, outputDir string) error {
 		}
 	}
 	return nil
+}
+
+func (m *MiddleImage) Resize(width, height int) {
+	if m.OriginalFormat == "gif" {
+		fmt.Println("current don't support resize gif")
+	}
+
+	for i, v := range m.ImageData {
+		resize_height := height
+		resize_width := width
+		if resize_height == 0 {
+			resize_height = v.Bounds().Dx()
+		}
+		if resize_width == 0 {
+			resize_width = v.Bounds().Dy()
+		}
+		m.ImageData[i] = imaging.Resize(v, resize_width, resize_height, imaging.Lanczos)
+	}
 }
 
 func ToPng(outputDir string, filenames []string, imageData []image.Image) error {
